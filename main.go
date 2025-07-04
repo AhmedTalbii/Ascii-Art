@@ -28,19 +28,18 @@ func main() {
 		fmt.Println("Invalid number of areguments... ")
 		return
 	}
+	input := args[0]
 	fileName := "standard.txt"
+	//fileName := "shadow.txt"
+	//fileName := "thinkertoy.txt"
 
 	info, err := os.Stat(fileName)
-	if err != nil {
-		fmt.Println("Error:", err)
-		return
-	}
-
-	if info.Mode() != 0o400 {
-		erRemoveFile := exec.Command("rm", "-f", fileName).Run()
-		if erRemoveFile != nil {
-			fmt.Println("Error removing file:", erRemoveFile)
-			return
+	if err == nil {
+		if info.Mode() != 0o400 {
+			erRemoveFile := exec.Command("rm", "-f", fileName).Run()
+			if erRemoveFile != nil {
+				fmt.Println(erRemoveFile)
+			}
 		}
 	}
 
@@ -52,41 +51,36 @@ func main() {
 			// download the file
 			errDownload := exec.Command("wget", "-q", url).Run()
 			if errDownload != nil {
-				fmt.Println("Download failed:", errDownload)
-				return
+				fmt.Println(errDownload)
 			}
 
 			// change the permission
 			erPermission := exec.Command("chmod", "400", fileName).Run()
 			if erPermission != nil {
 				fmt.Println("Error changing the permission:", erPermission)
-				return
+				fmt.Println(erPermission)
 			}
 		}
 	}
 
 	file, er := os.Open(fileName)
 	if er != nil {
-		fmt.Println("Error Opening File... ", er)
-		return
+		fmt.Println(er)
 	}
 	defer file.Close()
 
-	fileData, er := io.ReadAll(file)
-	if er != nil {
-		fmt.Println("Error Reading file... ", er)
-		return
+	fileData, erR := io.ReadAll(file)
+	if erR != nil {
+		fmt.Println(erR)
 	}
 
 	CleanFileData := strings.ReplaceAll(string(fileData), "\r", "")
 	AsciiShapes := strings.Split(CleanFileData, "\n\n")
-	input := args[0]
 
 	// validate user input
 	for _, char := range input {
 		if char < 32 || char > 126 {
 			fmt.Println("The string includes characters outside the ASCII range... ")
-			return
 		}
 	}
 
@@ -96,7 +90,6 @@ func main() {
 	if CheckNewLines(inputLines) {
 		inputLines = inputLines[1:]
 	}
-
 	for _, Inpline := range inputLines {
 		if Inpline == "" {
 			fmt.Println()
