@@ -25,7 +25,7 @@ func CheckNewLines(arr []string) bool {
 func main() {
 	args := os.Args[1:]
 	if len(args) != 1 {
-		fmt.Println("Invalid number of areguments... ")
+		fmt.Println("Invalid number of areguments...")
 		return
 	}
 	input := args[0]
@@ -80,7 +80,8 @@ func main() {
 	// validate user input
 	for _, char := range input {
 		if char < 32 || char > 126 {
-			fmt.Println("The string includes characters outside the ASCII range... ")
+			fmt.Println("The string includes characters outside the ASCII range...")
+			return
 		}
 	}
 
