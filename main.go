@@ -57,7 +57,6 @@ func main() {
 			// change the permission
 			erPermission := exec.Command("chmod", "400", fileName).Run()
 			if erPermission != nil {
-				fmt.Println("Error changing the permission:", erPermission)
 				fmt.Println(erPermission)
 			}
 		}
